@@ -33,16 +33,21 @@ img {
 .topnav {
   margin: 3.5%;
 }
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .topnav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .header-logo {
   float: left;
 }
 .main-navbar {
   background-color: #fff;
   float: right;
-  position: absolute;
-  right: 0;
-  z-index: 2;
-  top: 3rem;
 }
 .topnav a {
   float: left;
@@ -54,6 +59,14 @@ img {
   text-decoration: none;
   font-size: 20px;
   font-family: Roboto, sans-serif;
+}
+@media screen and (max-width: 768px) {
+  .main-navbar {
+    position: absolute;
+    right: 0;
+    z-index: 2;
+    top: 3.3rem;
+  }
 }
 
 .topnav a:hover,
@@ -78,6 +91,7 @@ img {
     display: none;
   }
   .topnav a.icon {
+    color: #ff0000;
     float: right;
     display: block;
   }
@@ -105,7 +119,6 @@ img {
   }
   .topnav a.icon {
     float: right;
-    color: #ff0000;
     display: block;
   }
 }
@@ -177,7 +190,7 @@ main {
 }
 
 .content {
-  margin: 5% auto;
+  margin: 5rem auto;
   width: 100%;
   max-width: 500px;
   animation-name: modalopen;
