@@ -19,11 +19,15 @@ const firstNameInput = document.getElementsByName("first")[0];
 const lastNameInput = document.getElementsByName("last")[0];
 const emailInput = document.getElementsByName("email")[0];
 const quantityInput = document.getElementsByName("quantity")[0];
-const cguCheckedInput = document.getElementById("checkbox1");
 const birthdateInput = document.getElementById("birthdate");
+const cguCheckedInput = document.getElementById("checkbox1");
 
 // radio buttons
 const radioBtns = document.getElementsByName("location");
+
+//form
+const formContainer = document.getElementsByTagName("form");
+const successContainer = document.getElementsByClassName("modal-success");
 
 const InputsArray = [
   firstNameInput,
@@ -33,7 +37,16 @@ const InputsArray = [
   quantityInput,
 ];
 
-var isFormValid = true;
+var formField = {
+  first: null,
+  last: null,
+  email: null,
+  birthdate: null,
+  quantity: null,
+  city: null,
+  isCguChecked: false,
+  // newsletter: false,
+};
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -85,25 +98,28 @@ function errorMessage(id, input) {
       message.innerHTML = "Veuillez saisir une donnée numérique";
       break;
 
-    case id == "quantity":
-      message.innerHTML = "Veuillez saisir une donnée numérique";
-      break;
-
     default:
       message.innerHTML =
         "Une erreure est survenue veuillez réessayer plus tard";
   }
 }
 
-//
+//handler on listner
 function handleValueOnChange(input, type, id) {
   input.addEventListener("input", function (e) {
-    console.log(e.target.value);
     var value = e.target.value;
+    formField[id] = e.target.value;
     checkValue(input, value, type, id);
   });
 }
 
+function handleCguChecked() {
+  cguCheckedInput.addEventListener("click", function () {
+    isCguChecked();
+  });
+}
+
+// check function
 function checkValue(input, value, type, id) {
   const isEmail = type == "email";
   const isText = type == "text";
@@ -132,23 +148,23 @@ function checkValue(input, value, type, id) {
   }
 }
 
-function handleCguChecked() {
-  cguCheckedInput.addEventListener("click", function (e) {
-    if (cguCheckedInput.checked) {
-      submitedError[1].classList.add("hidden");
-    } else {
-      isFormValid = false;
-      submitedError[1].classList.remove("hidden");
-    }
-  });
+function isCguChecked() {
+  if (cguCheckedInput.checked) {
+    submitedError[1].classList.add("hidden");
+    formField.isCguChecked = true;
+  } else {
+    submitedError[1].classList.remove("hidden");
+    formField.isCguChecked = false;
+  }
 }
 
-function handleRadioChecked() {
+function isRadioChecked() {
   var radioChecked = false;
 
   for (var radio of radioBtns) {
     if (radio.checked) {
       radioChecked = true;
+      formField.city = radio.value;
     }
   }
 
@@ -156,30 +172,39 @@ function handleRadioChecked() {
     submitedError[0].classList.add("hidden");
   } else {
     submitedError[0].classList.remove("hidden");
-    isFormValid = false;
   }
 }
 
+// function trigger
 InputsArray.map((input) => {
   handleValueOnChange(input, input.type, input.name);
 });
 
 handleCguChecked();
 
+// on form submit
 function validate(e) {
   e.preventDefault();
-  handleRadioChecked();
-
   for (var input of InputsArray) {
     checkValue(input, input.value, input.type, input.name);
-    if (input.value.length === 0) {
-      isFormValid = false;
+  }
+
+  isRadioChecked();
+  isCguChecked();
+
+  for (let key in formField) {
+    if (formField[key] == null) {
+      return;
     }
   }
 
-  if (isFormValid) {
-    return console.log("submit");
+  if (formField.isCguChecked) {
+    console.log("it works");
+    // formContainer[0].classList.add("hidden");
+    // successContainer[0].style.display = "flex";
+    return;
   } else {
-    return console.log("no submit");
+    console.log("not works");
+    return;
   }
 }
