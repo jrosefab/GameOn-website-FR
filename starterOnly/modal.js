@@ -21,6 +21,7 @@ const emailInput = document.getElementsByName("email")[0];
 const quantityInput = document.getElementsByName("quantity")[0];
 const birthdateInput = document.getElementById("birthdate");
 const cguCheckedInput = document.getElementById("checkbox1");
+const newsCheckedInput = document.getElementById("checkbox2");
 
 // radio buttons
 const radioBtns = document.getElementsByName("location");
@@ -45,7 +46,7 @@ var formField = {
   quantity: null,
   city: null,
   isCguChecked: false,
-  // newsletter: false,
+  newsletter: false,
 };
 
 // launch modal event
@@ -179,12 +180,12 @@ function isRadioChecked() {
 InputsArray.map((input) => {
   handleValueOnChange(input, input.type, input.name);
 });
-
 handleCguChecked();
 
 // on form submit
 function validate(e) {
   e.preventDefault();
+
   for (var input of InputsArray) {
     checkValue(input, input.value, input.type, input.name);
   }
@@ -192,19 +193,24 @@ function validate(e) {
   isRadioChecked();
   isCguChecked();
 
+  // factulative field
+  if (newsCheckedInput.checked) {
+    formField.newsletter = true;
+  }
+  console.log(formField);
+
   for (let key in formField) {
     if (formField[key] == null) {
       return;
     }
   }
 
+  // final validation
   if (formField.isCguChecked) {
-    console.log("it works");
-    // formContainer[0].classList.add("hidden");
-    // successContainer[0].style.display = "flex";
+    formContainer[0].classList.add("hidden");
+    successContainer[0].style.display = "flex";
     return;
   } else {
-    console.log("not works");
     return;
   }
 }
