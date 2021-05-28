@@ -19,7 +19,15 @@ const lastNameInput = document.getElementsByName("last")[0];
 const emailInput = document.getElementsByName("email")[0];
 const quantityInput = document.getElementsByName("quantity")[0];
 const cguCheckedInput = document.getElementById("checkbox1");
-const birthdateInput = document.getElementById("birthdate")[0];
+const birthdateInput = document.getElementById("birthdate");
+
+const InputsArray = [
+  firstNameInput,
+  lastNameInput,
+  birthdateInput,
+  emailInput,
+  quantityInput,
+];
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -69,53 +77,73 @@ function errorMessage(id, input) {
       message.innerHTML = "Veuillez saisir une donnée numérique";
       break;
 
+    case id == "quantity":
+      message.innerHTML = "Veuillez saisir une donnée numérique";
+      break;
+
     default:
       message.innerHTML =
         "Une erreure est survenue veuillez réessayer plus tard";
   }
 }
 
-function isInputValid(input, type, id) {
-  const isEmail = type == "email";
-  const isText = type == "text";
-
+function handleValueOnChange(input, type, id) {
   input.addEventListener("input", function (e) {
+    console.log(e.target.value);
     var value = e.target.value;
-    if (isText) {
-      if (value.length < 2) {
-        input.classList.add("danger");
-        errorMessage(id, input);
-      } else {
-        input.classList.remove("danger");
-        if (input.nextElementSibling !== null) {
-          input.nextElementSibling.remove();
-        }
-      }
-    } else if (type !== "text") {
-      var pattern = isEmail ? /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/ : /^\d+$/;
-      if (pattern.test(value)) {
-        input.classList.remove("danger");
-        if (input.nextElementSibling !== null) {
-          input.nextElementSibling.remove();
-        }
-      } else {
-        console.log(id);
-        errorMessage(id, input);
-      }
-    }
+    checkValue(input, value, type, id);
   });
 }
 
-isInputValid(firstNameInput, "text", "first");
-isInputValid(lastNameInput, "text", "last");
-isInputValid(emailInput, "email", "email");
-isInputValid(quantityInput, "number", "quantity");
+function checkValue(input, value, type, id) {
+  const isEmail = type == "email";
+  const isText = type == "text";
+  const isDate = type == "date";
 
-function validate(e) {
-  e.preventDefault();
-  if (!cguCheckedInput.checked) {
-    return alert("yo tu dois sélectionner le truc");
+  if (isText) {
+    if (value.length < 2) {
+      input.classList.add("danger");
+      errorMessage(id, input);
+    } else {
+      input.classList.remove("danger");
+      if (input.nextElementSibling !== null) {
+        input.nextElementSibling.remove();
+      }
+    }
+  } else if (!isText) {
+    var pattern = isEmail ? /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/ : /^\d+$/;
+    if (value.length !== 0 && pattern.test(value)) {
+      input.classList.remove("danger");
+      if (input.nextElementSibling !== null) {
+        input.nextElementSibling.remove();
+      }
+    } else {
+      errorMessage(id, input);
+    }
   }
 }
 
-console.log(cguCheckedInput.checked);
+InputsArray.map((input) => {
+  handleValueOnChange(input, input.type, input.name);
+});
+
+function validate(e) {
+  e.preventDefault();
+  var isFormValid = true;
+  if (!cguCheckedInput.checked) {
+    return alert(
+      "Veuillez valider les conditiions d'utilisations pour continuer"
+    );
+  }
+  for (var input of InputsArray) {
+    checkValue(input, input.value, input.type, input.name);
+    if (input.value.length === 0) {
+      isFormValid = false;
+    }
+  }
+  if (isFormValid) {
+    console.log("submit");
+  } else {
+    return console.log("no submit");
+  }
+}
