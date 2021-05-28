@@ -31,7 +31,22 @@ img {
 }
 
 .topnav {
-  margin: 3.5%;
+  padding: 3.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+  .topnav {
+    position: fixed;
+    background-color: #ffffff;
+    width: 100%;
+    z-index: 3;
+  }
+  .main-navbar {
+    background-color: #fff;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1200px) {
@@ -46,7 +61,6 @@ img {
   float: left;
 }
 .main-navbar {
-  background-color: #fff;
   float: right;
 }
 .topnav a {
@@ -63,9 +77,9 @@ img {
 @media screen and (max-width: 768px) {
   .main-navbar {
     position: absolute;
-    right: 0;
+    right: 1rem;
     z-index: 2;
-    top: 3.3rem;
+    top: 4rem;
   }
 }
 
@@ -98,14 +112,6 @@ img {
 }
 
 @media screen and (max-width: 768px) {
-  .topnav.responsive {
-    position: relative;
-  }
-  .topnav.responsive .icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
   .topnav.responsive a {
     float: none;
     display: block;
@@ -133,6 +139,11 @@ main {
   margin: 1px 20px 15px;
   border-radius: 2rem;
   text-align: justify;
+}
+@media screen and (max-width: 768px) {
+  main {
+    margin-top: 4rem;
+  }
 }
 
 .modal-btn {
@@ -220,6 +231,11 @@ input {
   border: 0.8px solid #ccc;
   outline: none;
 }
+
+.danger {
+  border: solid red 2px;
+}
+
 .text-control {
   margin: 0;
   padding: 8px;
