@@ -55,13 +55,13 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 //close modal event
 closeModalBtn.addEventListener("click", closeModal);
 
-function closeModal() {
-  modalbg.style.display = "none";
-}
-
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+}
+
+function closeModal() {
+  modalbg.style.display = "none";
 }
 
 // add error message at DdOM
@@ -120,7 +120,7 @@ function handleCguChecked() {
   });
 }
 
-// check function
+// checking function
 function checkValue(input, value, type, id) {
   const isEmail = type == "email";
   const isText = type == "text";
