@@ -250,6 +250,10 @@ input {
   color: #fe142f;
 }
 
+.hidden {
+  display: none;
+}
+
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 0.4em;
@@ -432,8 +436,8 @@ input[data-error]::after {
   z-index: 99;
 }
 
-/* Hide the items when the select box is closed: */
-.select-hide {
+/* hidden the items when the select box is closed: */
+.select-hidden {
   display: none;
 }
 

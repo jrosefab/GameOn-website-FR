@@ -12,6 +12,7 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeModalBtn = document.getElementsByClassName("close")[0];
+const submitedError = document.getElementsByClassName("submited_error");
 
 // inputs
 const firstNameInput = document.getElementsByName("first")[0];
@@ -21,6 +22,9 @@ const quantityInput = document.getElementsByName("quantity")[0];
 const cguCheckedInput = document.getElementById("checkbox1");
 const birthdateInput = document.getElementById("birthdate");
 
+// radio buttons
+const radioBtns = document.getElementsByName("location");
+
 const InputsArray = [
   firstNameInput,
   lastNameInput,
@@ -28,6 +32,8 @@ const InputsArray = [
   emailInput,
   quantityInput,
 ];
+
+var isFormValid = true;
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -44,6 +50,7 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
+// add error message at DdOM
 function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(
     newNode,
@@ -51,6 +58,7 @@ function insertAfter(newNode, referenceNode) {
   );
 }
 
+// config error message
 function errorMessage(id, input) {
   let message = document.createElement("p");
   if (input.nextElementSibling == null) {
@@ -87,6 +95,7 @@ function errorMessage(id, input) {
   }
 }
 
+//
 function handleValueOnChange(input, type, id) {
   input.addEventListener("input", function (e) {
     console.log(e.target.value);
@@ -100,7 +109,7 @@ function checkValue(input, value, type, id) {
   const isText = type == "text";
   const isDate = type == "date";
 
-  if (isText) {
+  if (isText || isDate) {
     if (value.length < 2) {
       input.classList.add("danger");
       errorMessage(id, input);
@@ -123,26 +132,53 @@ function checkValue(input, value, type, id) {
   }
 }
 
+function handleCguChecked() {
+  cguCheckedInput.addEventListener("click", function (e) {
+    if (cguCheckedInput.checked) {
+      submitedError[1].classList.add("hidden");
+    } else {
+      isFormValid = false;
+      submitedError[1].classList.remove("hidden");
+    }
+  });
+}
+
+function handleRadioChecked() {
+  var radioChecked = false;
+
+  for (var radio of radioBtns) {
+    if (radio.checked) {
+      radioChecked = true;
+    }
+  }
+
+  if (radioChecked) {
+    submitedError[0].classList.add("hidden");
+  } else {
+    submitedError[0].classList.remove("hidden");
+    isFormValid = false;
+  }
+}
+
 InputsArray.map((input) => {
   handleValueOnChange(input, input.type, input.name);
 });
 
+handleCguChecked();
+
 function validate(e) {
   e.preventDefault();
-  var isFormValid = true;
-  if (!cguCheckedInput.checked) {
-    return alert(
-      "Veuillez valider les conditiions d'utilisations pour continuer"
-    );
-  }
+  handleRadioChecked();
+
   for (var input of InputsArray) {
     checkValue(input, input.value, input.type, input.name);
     if (input.value.length === 0) {
       isFormValid = false;
     }
   }
+
   if (isFormValid) {
-    console.log("submit");
+    return console.log("submit");
   } else {
     return console.log("no submit");
   }
