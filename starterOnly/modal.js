@@ -1,17 +1,8 @@
-function editNav() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeModalBtn = document.getElementsByClassName("close")[0];
+const closeModalBtn = document.querySelectorAll(".close");
 const submitedError = document.getElementsByClassName("submited_error");
 
 // inputs
@@ -53,7 +44,17 @@ var formField = {
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 //close modal event
-closeModalBtn.addEventListener("click", closeModal);
+closeModalBtn.forEach((btn) => btn.addEventListener("click", closeModal));
+
+// edit nav
+function editNav() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
 
 // launch modal form
 function launchModal() {
@@ -110,7 +111,7 @@ function handleValueOnChange(input, type, id) {
   input.addEventListener("input", function (e) {
     var value = e.target.value;
     formField[id] = e.target.value;
-    checkValue(input, value, type, id);
+    checkFieldValue(input, value, type, id);
   });
 }
 
@@ -121,7 +122,7 @@ function handleCguChecked() {
 }
 
 // checking function
-function checkValue(input, value, type, id) {
+function checkFieldValue(input, value, type, id) {
   const isEmail = type == "email";
   const isText = type == "text";
   const isDate = type == "date";
@@ -187,7 +188,7 @@ function validate(e) {
   e.preventDefault();
 
   for (var input of InputsArray) {
-    checkValue(input, input.value, input.type, input.name);
+    checkFieldValue(input, input.value, input.type, input.name);
   }
 
   isRadioChecked();
@@ -197,10 +198,9 @@ function validate(e) {
   if (newsCheckedInput.checked) {
     formField.newsletter = true;
   }
-  console.log(formField);
 
-  for (let key in formField) {
-    if (formField[key] == null) {
+  for (let [key, value] of Object.entries(formField)) {
+    if (value == null || value.length == 0) {
       return;
     }
   }
