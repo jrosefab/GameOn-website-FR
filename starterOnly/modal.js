@@ -29,6 +29,7 @@ const InputsArray = [
   quantityInput,
 ];
 
+// object formField maintain each value in validation process
 var formField = {
   first: null,
   last: null,
@@ -65,7 +66,7 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-// add error message at DdOM
+// insert error message after each field in case of bad value
 function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(
     newNode,
@@ -73,7 +74,7 @@ function insertAfter(newNode, referenceNode) {
   );
 }
 
-// config error message
+// switch case to attribute the right error message depend on fields 
 function errorMessage(id, input) {
   let message = document.createElement("p");
   if (input.nextElementSibling == null) {
@@ -106,7 +107,7 @@ function errorMessage(id, input) {
   }
 }
 
-//handler on listner
+//listen input value to check value each time it changed
 function handleValueOnChange(input, type, id) {
   input.addEventListener("input", function (e) {
     var value = e.target.value;
@@ -115,13 +116,7 @@ function handleValueOnChange(input, type, id) {
   });
 }
 
-function handleCguChecked() {
-  cguCheckedInput.addEventListener("click", function () {
-    isCguChecked();
-  });
-}
-
-// checking function
+//handle each field to check if its fit the right Regex or condition
 function checkFieldValue(input, value, type, id) {
   const isEmail = type == "email";
   const isText = type == "text";
@@ -150,6 +145,14 @@ function checkFieldValue(input, value, type, id) {
   }
 }
 
+//listen cgu value to check value if it checked or not
+function handleCguChecked() {
+  cguCheckedInput.addEventListener("click", function () {
+    isCguChecked();
+  });
+}
+
+//handle cgu value to check value if it checked or not
 function isCguChecked() {
   if (cguCheckedInput.checked) {
     submitedError[1].classList.add("hidden");
@@ -160,9 +163,9 @@ function isCguChecked() {
   }
 }
 
+//handle if at least one radio is selected
 function isRadioChecked() {
   var radioChecked = false;
-
   for (var radio of radioBtns) {
     if (radio.checked) {
       radioChecked = true;
@@ -177,13 +180,13 @@ function isRadioChecked() {
   }
 }
 
-// function trigger
+//map over each input to apply the same function
 InputsArray.map((input) => {
   handleValueOnChange(input, input.type, input.name);
 });
 handleCguChecked();
 
-// on form submit
+// submitted value
 function validate(e) {
   e.preventDefault();
 
@@ -194,18 +197,19 @@ function validate(e) {
   isRadioChecked();
   isCguChecked();
 
-  // factulative field
+  // facultative newsletter field
   if (newsCheckedInput.checked) {
     formField.newsletter = true;
   }
 
+  // if at least one field has error, return this function
   for (let [key, value] of Object.entries(formField)) {
     if (value == null || value.length == 0) {
       return;
     }
   }
 
-  // final validation
+  // final validation 
   if (formField.isCguChecked) {
     formContainer[0].classList.add("hidden");
     successContainer[0].style.display = "flex";
