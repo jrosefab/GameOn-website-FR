@@ -74,7 +74,7 @@ function insertAfter(newNode, referenceNode) {
   );
 }
 
-// switch case to attribute the right error message depend on fields 
+// switch case to attribute the right error message depend on fields
 function errorMessage(id, input) {
   let message = document.createElement("p");
   if (input.nextElementSibling == null) {
@@ -155,10 +155,10 @@ function handleCguChecked() {
 //handle cgu value to check value if it checked or not
 function isCguChecked() {
   if (cguCheckedInput.checked) {
-    submitedError[1].classList.add("hidden");
+    submitedError[1].style.display = "none";
     formField.isCguChecked = true;
   } else {
-    submitedError[1].classList.remove("hidden");
+    submitedError[1].style.display = "block";
     formField.isCguChecked = false;
   }
 }
@@ -174,9 +174,9 @@ function isRadioChecked() {
   }
 
   if (radioChecked) {
-    submitedError[0].classList.add("hidden");
+    submitedError[0].style.display = "none";
   } else {
-    submitedError[0].classList.remove("hidden");
+    submitedError[0].style.display = "block";
   }
 }
 
@@ -209,7 +209,7 @@ function validate(e) {
     }
   }
 
-  // final validation 
+  // final validation
   if (formField.isCguChecked) {
     formContainer[0].classList.add("hidden");
     successContainer[0].style.display = "flex";
