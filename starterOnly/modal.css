@@ -263,7 +263,11 @@ input {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.submited_error {
+  display: inherit;
 }
 
 .modal-success {
